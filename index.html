@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>J² Builders | AutoCAD AI Plugin — Design. Build. Deliver.</title>
+  <meta name="description" content="Control AutoCAD with plain English through Claude AI. Stop clicking. Start describing. The AutoCAD MCP Plugin by J² Builders." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1B2033;
+      --copper: #C07A3A;
+      --tan:    #B5A99A;
+      --cream:  #FAF9F7;
+      --white:  #FFFFFF;
+      --gray:   #6B7280;
+      --light:  #F0EDE8;
+      --border: #E5E1DB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 999;
+      background: rgba(250,249,247,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--navy);
+    }
+
+    /* SVG Logo mark */
+    .logo-mark {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex; flex-direction: column; line-height: 1;
+    }
+    .logo-text .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600; font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+    }
+    .logo-text .brand sup {
+      color: var(--copper); font-size: 0.65em;
+      vertical-align: super;
+    }
+    .logo-text .sub {
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      color: var(--tan); font-weight: 500;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--gray);
+      font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--navy); }
+
+    .nav-cta {
+      background: var(--navy); color: var(--white) !important;
+      padding: 0.5rem 1.25rem; border-radius: 6px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--copper) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 2rem 80px;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .hero-content { max-width: 680px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--light); border: 1px solid var(--border);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 0.8rem; font-weight: 500; color: var(--copper);
+      margin-bottom: 2rem; letter-spacing: 0.05em;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--copper); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 600; line-height: 1.1;
+      color: var(--navy); margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--copper);
+    }
+
+    .hero p {
+      font-size: 1.1rem; color: var(--gray);
+      max-width: 540px; margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy); color: var(--white);
+      padding: 0.875rem 2rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: all 0.25s; border: 2px solid var(--navy);
+    }
+    .btn-primary:hover {
+      background: var(--copper); border-color: var(--copper);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(192,122,58,0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--navy);
+      padding: 0.875rem 2rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      border: 2px solid var(--border); transition: all 0.25s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      flex: 1; display: flex; justify-content: center; align-items: center;
+      padding-left: 4rem;
+    }
+
+    /* Terminal mockup */
+    .terminal {
+      background: #0D1117; border-radius: 12px;
+      width: 100%; max-width: 480px;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .terminal-bar {
+      background: #1C2128; padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .terminal-bar span {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .t-red { background: #FF5F57; }
+    .t-yellow { background: #FEBC2E; }
+    .t-green { background: #28C840; }
+    .terminal-title {
+      flex: 1; text-align: center;
+      font-size: 0.75rem; color: #6B7280;
+    }
+    .terminal-body { padding: 1.5rem; font-family: 'Courier New', monospace; }
+    .t-line { font-size: 0.82rem; margin-bottom: 0.5rem; }
+    .t-user { color: #58A6FF; }
+    .t-cmd  { color: #E6EDF3; }
+    .t-ai   { color: #3FB950; }
+    .t-dim  { color: #6B7280; }
+    .t-copper { color: #C07A3A; }
+    .t-cursor {
+      display: inline-block; width: 8px; height: 15px;
+      background: #3FB950; animation: blink 1s step-end infinite;
+      vertical-align: middle; margin-left: 2px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── STATS ── */
+    .stats-bar {
+      background: var(--navy);
+      padding: 2rem;
+    }
+    .stats-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: flex; justify-content: space-around;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--copper); }
+    .stat-label { font-size: 0.8rem; color: var(--tan); margin-top: 4px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 2rem; }
+
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--copper); margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600; color: var(--navy);
+      line-height: 1.2; margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1rem; color: var(--gray);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    /* ── FEATURES ── */
+    .features-bg { background: var(--white); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem; margin-top: 4rem;
+    }
+
+    .feature-card {
+      background: var(--cream); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--copper);
+      box-shadow: 0 8px 32px rgba(192,122,58,0.1);
+      transform: translateY(-4px);
+    }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: var(--light); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .feature-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0; margin-top: 4rem;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute; top: 28px; left: 10%; right: 10%;
+      height: 1px; background: var(--border); z-index: 0;
+    }
+
+    .step { text-align: center; padding: 0 1.5rem; position: relative; z-index: 1; }
+    .step-num {
+      width: 56px; height: 56px;
+      background: var(--white); border: 2px solid var(--copper);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--copper);
+    }
+    .step h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .step p { font-size: 0.875rem; color: var(--gray); }
+
+    /* ── VIDEO ── */
+    .video-bg { background: var(--navy); }
+
+    .video-bg .section-title { color: var(--white); }
+    .video-bg .section-sub   { color: var(--tan); }
+    .video-bg .section-tag   { color: var(--copper); }
+
+    /* video-wrapper defined in demo tabs section below */
+
+    /* ── ADD YOUR VIDEO HERE ── */
+    /* Replace the placeholder below with an <iframe> or <video> tag */
+    .video-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.5rem;
+      background: linear-gradient(135deg, #0D1117 0%, #1B2033 100%);
+    }
+
+    .play-btn {
+      width: 80px; height: 80px;
+      background: var(--copper); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s; cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(192,122,58,0.4);
+      animation: ring 2s infinite;
+    }
+    .play-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(192,122,58,0.5);
+    }
+    @keyframes ring {
+      0% { box-shadow: 0 0 0 0 rgba(192,122,58,0.4); }
+      70% { box-shadow: 0 0 0 20px rgba(192,122,58,0); }
+      100% { box-shadow: 0 0 0 0 rgba(192,122,58,0); }
+    }
+    .play-btn svg { margin-left: 4px; }
+
+    .video-caption { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+
+    /* VIDEO EMBED INSTRUCTIONS (shown only in source) */
+    /* To add your video:
+       1. YouTube: Replace .video-placeholder div with:
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+          frameborder="0" allowfullscreen></iframe>
+       2. Local MP4: Replace with:
+          <video width="100%" height="100%" controls poster="thumbnail.jpg">
+            <source src="demo.mp4" type="video/mp4">
+          </video>
+    */
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: flex; gap: 2rem; margin-top: 4rem;
+      flex-wrap: wrap; justify-content: center;
+    }
+
+    .price-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem;
+      flex: 1; min-width: 280px; max-width: 380px;
+      position: relative; transition: all 0.3s;
+    }
+    .price-card.featured {
+      border-color: var(--copper);
+      background: var(--navy); color: var(--white);
+      box-shadow: 0 24px 48px rgba(27,32,51,0.2);
+    }
+    .price-card:hover { transform: translateY(-6px); }
+
+    .price-badge {
+      position: absolute; top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--copper); color: var(--white);
+      font-size: 0.7rem; font-weight: 700;
+      padding: 4px 14px; border-radius: 100px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .price-tier {
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--copper); margin-bottom: 0.75rem;
+    }
+    .price-card.featured .price-tier { color: var(--copper); }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 700; line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .price-amount sup { font-size: 1.5rem; vertical-align: super; }
+    .price-period { font-size: 0.85rem; color: var(--gray); margin-bottom: 1.5rem; }
+    .price-card.featured .price-period { color: var(--tan); }
+
+    .price-divider {
+      border: none; border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+    .price-card.featured .price-divider { border-color: rgba(255,255,255,0.1); }
+
+    .price-features { list-style: none; margin-bottom: 2rem; }
+    .price-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.9rem; margin-bottom: 0.75rem;
+      color: var(--gray);
+    }
+    .price-card.featured .price-features li { color: var(--tan); }
+    .price-features li::before {
+      content: '✓';
+      width: 20px; height: 20px;
+      background: rgba(192,122,58,0.15); color: var(--copper);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 0.7rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .btn-buy {
+      display: block; text-align: center;
+      background: var(--copper); color: var(--white);
+      padding: 0.875rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: all 0.25s;
+    }
+    .btn-buy:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(192,122,58,0.35);
+    }
+
+    .btn-buy-outline {
+      display: block; text-align: center;
+      background: transparent; color: var(--navy);
+      padding: 0.875rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      border: 2px solid var(--border); transition: all 0.25s;
+    }
+    .btn-buy-outline:hover {
+      border-color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    /* ── FAQ ── */
+    .faq-bg { background: var(--white); }
+
+    .faq-list { margin-top: 3rem; max-width: 720px; }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-q {
+      width: 100%; background: none; border: none;
+      text-align: left; padding: 1.25rem 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem; font-weight: 500; color: var(--navy);
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem;
+    }
+    .faq-q .faq-icon {
+      width: 24px; height: 24px; flex-shrink: 0;
+      background: var(--light); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--copper); transition: transform 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      font-size: 0.9rem; color: var(--gray); line-height: 1.7;
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+      padding-bottom: 0;
+    }
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding-bottom: 1.25rem;
+    }
+
+    /* ── DEMO STEPS ── */
+    .demo-steps {
+      display: flex; align-items: flex-start;
+      gap: 1rem; margin-top: 2.5rem;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .demo-step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 1.25rem 1.5rem;
+      flex: 1; min-width: 220px; max-width: 300px;
+    }
+    .demo-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .demo-step-label {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--copper); margin-bottom: 0.35rem;
+    }
+    .demo-step-text {
+      font-size: 0.875rem; color: var(--tan); line-height: 1.5;
+    }
+    .demo-step-text code {
+      background: rgba(192,122,58,0.2); color: var(--copper);
+      padding: 1px 6px; border-radius: 4px;
+      font-size: 0.8rem; font-family: 'Courier New', monospace;
+    }
+    .demo-arrow {
+      color: var(--copper); font-size: 1.5rem;
+      align-self: center; flex-shrink: 0; opacity: 0.6;
+      padding-top: 0.5rem;
+    }
+    @media (max-width: 700px) { .demo-arrow { display: none; } }
+
+    /* ── DEMO TABS ── */
+    .demo-tabs {
+      display: flex; gap: 0; margin-top: 3rem;
+      border-radius: 12px 12px 0 0; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-bottom: none;
+    }
+    .demo-tab {
+      flex: 1; padding: 0.875rem 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: none; color: var(--tan);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .demo-tab:last-child { border-right: none; }
+    .demo-tab.active {
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+    }
+    .demo-tab:hover:not(.active) { background: rgba(255,255,255,0.07); }
+
+    .demo-panel { display: none; }
+    .demo-panel.active { display: block; }
+
+    .video-wrapper {
+      border-radius: 0 0 16px 16px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #0D1117;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: none;
+      max-width: 900px;
+    }
+
+    /* ── LINKEDIN BLOCK ── */
+    .demo-linkedin {
+      margin-top: 2rem; max-width: 700px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 2rem;
+    }
+    .linkedin-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #0A66C2; background: rgba(10,102,194,0.1);
+      border: 1px solid rgba(10,102,194,0.2);
+      padding: 4px 12px; border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .linkedin-copy {
+      color: var(--tan); font-size: 0.95rem;
+      line-height: 1.7; margin-bottom: 1rem;
+    }
+    .linkedin-points {
+      margin: 1.25rem 0; display: flex;
+      flex-direction: column; gap: 0.5rem;
+    }
+    .lp-item {
+      color: var(--white); font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: var(--navy);
+      padding: 80px 2rem;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600; color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .cta-banner p { color: var(--tan); margin-bottom: 2.5rem; font-size: 1rem; }
+    .cta-banner .btn-primary { background: var(--copper); border-color: var(--copper); font-size: 1rem; padding: 1rem 2.5rem; }
+    .cta-banner .btn-primary:hover { background: #d4883f; border-color: #d4883f; }
+
+    .guarantee {
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,0.4); font-size: 0.8rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0D1117;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .footer-logo .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600; font-size: 1.2rem;
+      color: var(--white); letter-spacing: 0.08em;
+    }
+    .footer-logo .brand sup { color: var(--copper); }
+    .footer-links {
+      display: flex; justify-content: center; gap: 2rem;
+      flex-wrap: wrap; list-style: none; margin-bottom: 1.5rem;
+    }
+    .footer-links a {
+      color: #6B7280; text-decoration: none; font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--copper); }
+    .footer-copy { color: #374151; font-size: 0.8rem; }
+    .footer-copy span { color: var(--copper); }
+
+    /* ── RESPONSIVE ── */
+    .hero-wrapper {
+      display: flex; align-items: center;
+      gap: 4rem; width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .hero-wrapper { flex-direction: column; }
+      .hero-visual { padding-left: 0; width: 100%; }
+      .steps::before { display: none; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 1.25rem; }
+      .pricing-grid { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════
+     NAVIGATION
+══════════════════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <!-- J² Logo SVG (matches your uploaded logo) -->
+    <svg class="logo-mark" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="8" fill="#1B2033"/>
+      <!-- Buildings inside J -->
+      <rect x="16" y="22" width="4"  height="14" fill="#B5A99A" opacity="0.5"/>
+      <rect x="21" y="16" width="4"  height="20" fill="#B5A99A" opacity="0.8"/>
+      <rect x="26" y="12" width="4"  height="24" fill="#B5A99A"/>
+      <!-- J curve line -->
+      <path d="M28 8 L28 30 Q28 38 20 38 Q13 38 13 32" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Superscript 2 -->
+      <text x="31" y="13" fill="#C07A3A" font-size="8" font-family="serif" font-weight="700">2</text>
+    </svg>
+    <div class="logo-text">
+      <span class="brand">J<sup>2</sup> BUILDERS</span>
+      <span class="sub">Design • Build • Deliver</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="YOUR_GUMROAD_LINK" class="nav-cta">Get the Plugin →</a></li>
+  </ul>
+</nav>
+
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-wrapper">
+    <!-- Left: Copy -->
+    <div class="hero-content">
+      <div class="hero-badge">AutoCAD × Claude AI Plugin</div>
+
+      <h1>
+        Stop Clicking.<br/>
+        Start <em>Describing.</em>
+      </h1>
+
+      <p>
+        The world's first AutoCAD MCP plugin that lets Claude AI control your drawings.
+        Describe what you need in plain English — walls, sections, dimensions — and watch AutoCAD execute it instantly.
+      </p>
+
+      <div class="hero-actions">
+        <a href="YOUR_GUMROAD_LINK_SUPPORT" class="btn-primary">
+          Get the Plugin — from $5
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#demo" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor"/></svg>
+          Watch Demo
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Terminal mockup -->
+    <div class="hero-visual">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="t-red"></span>
+          <span class="t-yellow"></span>
+          <span class="t-green"></span>
+          <span class="terminal-title">Claude × AutoCAD</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line t-dim">// You type in plain English:</div>
+          <br/>
+          <div class="t-line">
+            <span class="t-user">You: </span>
+            <span class="t-cmd">"Draw a 10x8m floor plan with 4 rooms, add dimensions and door openings"</span>
+          </div>
+          <br/>
+          <div class="t-line t-dim">// Claude thinks for 2 seconds...</div>
+          <br/>
+          <div class="t-line">
+            <span class="t-ai">Claude: </span>
+            <span class="t-cmd">Drawing floor plan...</span>
+          </div>
+          <div class="t-line t-dim">  → 4 walls created (polylines)</div>
+          <div class="t-line t-dim">  → 4 rooms partitioned</div>
+          <div class="t-line t-dim">  → 3 door openings placed</div>
+          <div class="t-line t-dim">  → Dimensions added (mm)</div>
+          <div class="t-line">
+            <span class="t-copper">✓ Done.</span>
+            <span class="t-dim"> Saved as floor_plan.dwg</span>
+          </div>
+          <br/>
+          <div class="t-line">
+            <span class="t-user">You: </span>
+            <span class="t-cmd"><span class="t-cursor"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     STATS BAR
+══════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">10<span>×</span></div>
+      <div class="stat-label">Faster than manual drafting</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">500<span>+</span></div>
+      <div class="stat-label">Hours saved per year</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Windows</div>
+      <div class="stat-label">AutoCAD on Windows supported</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<span>×</span></div>
+      <div class="stat-label">One-time payment, yours forever</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     FEATURES
+══════════════════════════════ -->
+<section class="features-bg" id="features">
+  <div class="section-inner">
+    <span class="section-tag">Why Engineers Choose This</span>
+    <h2 class="section-title">Everything you hated about<br/>manual CAD — gone.</h2>
+    <p class="section-sub">Built by engineers, for engineers. No AI fluff — just real automation that runs inside AutoCAD via the Model Context Protocol.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗣️</div>
+        <h3>Natural Language Commands</h3>
+        <p>Type what you want in plain English. Claude interprets your intent and executes precise AutoCAD commands — no scripts needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Execution</h3>
+        <p>Watch your drawing build itself in seconds. Lines, dimensions, layers, blocks — all created live inside your open DWG file.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏗️</div>
+        <h3>Structural & Architectural</h3>
+        <p>Floors, columns, beams, sections, elevations. The plugin understands construction terminology, not just geometry.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔌</div>
+        <h3>Zero Learning Curve</h3>
+        <p>Works with Claude Desktop (free). Install the plugin, connect MCP, start talking. No new software to learn.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📐</div>
+        <h3>Dimensions & Annotations</h3>
+        <p>Auto-add dimensions, text, leaders, and title blocks. Claude handles the tedious annotation work you hate doing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Local & Secure</h3>
+        <p>Runs entirely on your machine. Your drawings never leave your computer. Claude only sends commands, not your files.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     HOW IT WORKS
+══════════════════════════════ -->
+<section id="how-it-works">
+  <div class="section-inner">
+    <span class="section-tag">Setup in Minutes</span>
+    <h2 class="section-title">Three steps from purchase<br/>to first drawing.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Install the Plugin</h3>
+        <p>Download the package, run the installer. It registers the MCP server automatically on your Windows machine.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Connect Claude Desktop</h3>
+        <p>Open Claude Desktop (free), add the MCP connection from the config file included. Takes 60 seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Start Drafting</h3>
+        <p>Open AutoCAD, open Claude, start describing your drawing. Claude takes control and builds it for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     VIDEO DEMO
+══════════════════════════════ -->
+<section class="video-bg" id="demo">
+  <div class="section-inner">
+    <span class="section-tag">See It in Action</span>
+    <h2 class="section-title">Watch Claude draft a complete<br/>floor plan in 90 seconds.</h2>
+    <p class="section-sub" style="color: var(--tan);">No editing. No cuts. Real-time from a single natural language prompt.</p>
+
+    <!-- Demo tabs -->
+    <div class="demo-tabs">
+      <button class="demo-tab active" data-tab="0">Demo 1 — House Design with AI</button>
+      <button class="demo-tab" data-tab="1">Demo 2 — Layer Automation</button>
+    </div>
+
+    <!-- ── Demo 1 — House Design ── -->
+    <div class="demo-panel active" id="demo-panel-0">
+      <div class="video-wrapper">
+        <video width="100%" height="100%" controls style="display:block; border-radius:0 0 16px 16px;" preload="metadata">
+          <source src="demo2.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="demo-steps">
+        <div class="demo-step">
+          <div class="demo-icon">💬</div>
+          <div>
+            <div class="demo-step-label">One prompt</div>
+            <div class="demo-step-text">"Design a 1,000 sq.ft house."</div>
+          </div>
+        </div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-step">
+          <div class="demo-icon">🏠</div>
+          <div>
+            <div class="demo-step-label">Claude generates the layout</div>
+            <div class="demo-step-text">Draws rooms, walls, and dimensions directly inside AutoCAD in real time.</div>
+          </div>
+        </div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-step">
+          <div class="demo-icon">✅</div>
+          <div>
+            <div class="demo-step-label">CAD model appears live</div>
+            <div class="demo-step-text">No manual drawing. The house layout builds itself on screen as Claude works.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Demo 2 — Layer Automation ── -->
+    <div class="demo-panel" id="demo-panel-1">
+      <div class="video-wrapper">
+        <video width="100%" height="100%" controls style="display:block; border-radius:0 0 16px 16px;" preload="metadata">
+          <source src="demo.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="demo-steps">
+        <div class="demo-step">
+          <div class="demo-icon">💬</div>
+          <div>
+            <div class="demo-step-label">One plain-English prompt</div>
+            <div class="demo-step-text">"Connect with CAD, select all text, and move it to a new layer with red colour."</div>
+          </div>
+        </div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-step">
+          <div class="demo-icon">🔍</div>
+          <div>
+            <div class="demo-step-label">Claude reads the drawing</div>
+            <div class="demo-step-text">Connects to AutoCAD, scans the floor plan, and identifies all 10 text annotations.</div>
+          </div>
+        </div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-step">
+          <div class="demo-icon">✅</div>
+          <div>
+            <div class="demo-step-label">Result in seconds</div>
+            <div class="demo-step-text">Creates the <code>TEXT_RED</code> layer and moves every label — toilet, kitchen, dining — visibly turning red in the viewport.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     PRICING
+══════════════════════════════ -->
+<section id="pricing">
+  <div class="section-inner">
+    <span class="section-tag">Pricing</span>
+    <h2 class="section-title">Pay once. Use forever.</h2>
+    <p class="section-sub">No subscriptions. No per-seat fees. Buy it, own it.</p>
+
+    <div class="pricing-grid">
+      <!-- $5 — No support -->
+      <div class="price-card">
+        <div class="price-tier">Plugin Only</div>
+        <div class="price-amount"><sup>$</sup>5</div>
+        <div class="price-period">One-time payment</div>
+        <hr class="price-divider"/>
+        <ul class="price-features">
+          <li>Full AutoCAD MCP Plugin</li>
+          <li>Natural language drawing commands</li>
+          <li>Lines, layers, dimensions, annotations</li>
+          <li>Floor plan & block generation</li>
+          <li>Step-by-step setup guide (PDF)</li>
+          <li>Free lifetime updates</li>
+        </ul>
+        <a href="YOUR_GUMROAD_LINK_BASIC" class="btn-buy-outline">Get Plugin — $5</a>
+      </div>
+
+      <!-- $10 — With support (featured) -->
+      <div class="price-card featured">
+        <div class="price-badge">Recommended</div>
+        <div class="price-tier">Plugin + Support</div>
+        <div class="price-amount"><sup>$</sup>10</div>
+        <div class="price-period">One-time payment</div>
+        <hr class="price-divider"/>
+        <ul class="price-features">
+          <li>Everything in Plugin Only</li>
+          <li>Email installation support</li>
+          <li>We help you set it up if stuck</li>
+          <li>Priority response within 24 hrs</li>
+        </ul>
+        <a href="YOUR_GUMROAD_LINK_SUPPORT" class="btn-buy">Get Plugin + Support — $10 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     FAQ
+══════════════════════════════ -->
+<section class="faq-bg">
+  <div class="section-inner">
+    <span class="section-tag">FAQ</span>
+    <h2 class="section-title">Common questions.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">
+          Do I need a paid Claude plan to use MCP?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">No — Claude Desktop is free to download and MCP works on the free Claude plan. A free account is enough to get started. If you use it heavily for professional work, Claude Pro ($20/mo) gives you higher usage limits so you don't hit the daily cap mid-project.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Which version of AutoCAD do I need?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">The plugin works with AutoCAD on Windows. Mac AutoCAD is not currently supported as it uses a different API. If you're unsure whether your setup is compatible, email us before purchasing and we'll confirm.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Is my drawing data sent to the cloud?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">No. The MCP plugin runs locally on your machine. Claude only receives your text descriptions and sends back drawing commands — your DWG files never leave your computer.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          What if I need help setting it up?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Every purchase includes a step-by-step setup guide PDF and video walkthrough. Pro customers get priority email support within 24 hours. Just email alin2k00@gmail.com.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     CTA BANNER
+══════════════════════════════ -->
+<div class="cta-banner">
+  <h2>Ready to 10× your drafting speed?</h2>
+  <p>Join engineers who've stopped clicking and started describing.</p>
+  <a href="YOUR_GUMROAD_LINK_SUPPORT" class="btn-primary">
+    Get the Plugin — from $5
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+  <p class="guarantee">One-time payment &nbsp;·&nbsp; Instant download &nbsp;·&nbsp; Works with AutoCAD on Windows</p>
+</div>
+
+
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer>
+  <div class="footer-logo">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="8" fill="#1B2033"/>
+      <rect x="16" y="22" width="4"  height="14" fill="#B5A99A" opacity="0.5"/>
+      <rect x="21" y="16" width="4"  height="20" fill="#B5A99A" opacity="0.8"/>
+      <rect x="26" y="12" width="4"  height="24" fill="#B5A99A"/>
+      <path d="M28 8 L28 30 Q28 38 20 38 Q13 38 13 32" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <text x="31" y="13" fill="#C07A3A" font-size="8" font-family="serif" font-weight="700">2</text>
+    </svg>
+    <span class="brand">J<sup>2</sup> BUILDERS</span>
+  </div>
+
+  <ul class="footer-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="YOUR_GUMROAD_LINK">Buy Now</a></li>
+  </ul>
+
+  <p class="footer-copy">
+    © 2024 J² Builders. Built with <span>♥</span> by an engineer, for engineers.
+  </p>
+</footer>
+
+
+<script>
+  // ── FAQ accordion ──
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── Smooth nav highlight ──
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? '#C07A3A' : '';
+    });
+  });
+
+  // ── Demo tab switcher ──
+  document.querySelectorAll('.demo-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = tab.dataset.tab;
+      document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('demo-panel-' + idx).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
